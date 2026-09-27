@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - Industrial Waste Heat ORC System</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body class="login-page">
+
+  <div class="login-card">
+    <h1>Industrial Waste Heat &rarr; ORC</h1>
+    <p class="sub">Electricity Generation &amp; Monitoring System</p>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <label class="required">Username</label>
+        <input type="text" id="username" placeholder="admin" autocomplete="username" required>
+      </div>
+      <div class="form-group">
+        <label class="required">Password</label>
+        <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Log In</button>
+      <div class="login-error" id="loginError">Invalid username or password.</div>
+    </form>
+
+    <div class="login-note">
+      <strong>Demo authentication only.</strong> Use <code>admin</code> / <code>admin123</code>.
+      This is a college-project login screen and is not intended as production-grade security.
+    </div>
+  </div>
+
+<script>
+  // If already "logged in" for this browser session, skip straight to dashboard.
+  if (localStorage.getItem('orc_demo_auth') === 'true') {
+    window.location.href = 'dashboard.html';
+  }
+
+  document.getElementById('loginForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const u = document.getElementById('username').value.trim();
+    const p = document.getElementById('password').value;
+    const errorEl = document.getElementById('loginError');
+
+    if (u === 'admin' && p === 'admin123') {
+      localStorage.setItem('orc_demo_auth', 'true');
+      window.location.href = 'dashboard.html';
+    } else {
+      errorEl.style.display = 'block';
+    }
+  });
+</script>
+</body>
+</html>

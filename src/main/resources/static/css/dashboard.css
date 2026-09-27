@@ -1,0 +1,68 @@
+/* ---------- Login screen ---------- */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0a4436, #0f5c4c 60%, #14735f);
+}
+.login-card {
+  background: #fff;
+  width: 380px;
+  max-width: 92vw;
+  border-radius: 12px;
+  padding: 32px 28px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+}
+.login-card h1 { font-size: 18px; margin: 0 0 4px; }
+.login-card p.sub { color: #667075; font-size: 13px; margin: 0 0 22px; }
+.login-card .form-group { margin-bottom: 14px; }
+.login-card .btn-primary { width: 100%; justify-content: center; margin-top: 6px; }
+.login-note {
+  margin-top: 16px;
+  font-size: 11.5px;
+  color: #8a5a1f;
+  background: #fff3e2;
+  border: 1px solid #f0d3a3;
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+.login-error { color: #c0392b; font-size: 13px; margin-top: 10px; display: none; }
+
+/* ---------- Energy flow diagram (ORC calculator page) ---------- */
+.flow-diagram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.flow-step {
+  background: #eef6f2;
+  border: 1px solid #cfe6da;
+  color: #0f5c4c;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  width: 220px;
+  text-align: center;
+}
+.flow-arrow { color: #9cb3ab; font-size: 16px; line-height: 1; }
+
+/* ---------- Result cards ---------- */
+.result-card {
+  background: #f7fbf9;
+  border: 1px solid #d9ece3;
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.result-card .label { font-size: 12px; color: #667075; }
+.result-card .value { font-size: 20px; font-weight: 700; color: #0f5c4c; margin-top: 2px; }
+
+/* ---------- Print report ---------- */
+@media print {
+  .no-print { display: none !important; }
+  .sidebar, .topbar { display: none !important; }
+  .main { margin-left: 0 !important; }
+  body { background: #fff; }
+}

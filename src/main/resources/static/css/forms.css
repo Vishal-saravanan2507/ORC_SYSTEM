@@ -1,0 +1,30 @@
+.field-error {
+  color: #c0392b;
+  font-size: 12px;
+  margin-top: 2px;
+  display: none;
+}
+.form-group.has-error input,
+.form-group.has-error select {
+  border-color: #c0392b;
+}
+.form-group.has-error .field-error { display: block; }
+
+.required::after {
+  content: " *";
+  color: #c0392b;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 10px;
+  color: #667075;
+}
+.empty-state .icon { font-size: 32px; margin-bottom: 8px; }

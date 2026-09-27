@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ORC Calculator - Waste Heat ORC System</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">Waste Heat &rarr; ORC <span>Energy Management System</span></div>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="industrial-units.html">Industrial Units</a>
+      <a href="waste-heat.html">Waste Heat Data</a>
+      <a href="orc-calculator.html">ORC Calculator</a>
+      <a href="monitoring.html">Monitoring</a>
+      <a href="reports.html">Reports</a>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button class="menu-toggle" id="menuToggle">&#9776;</button>
+        <div class="title">ORC Calculator</div>
+      </div>
+      <div class="meta">
+        <span id="topbarDate"></span>
+        <span class="user-chip">admin</span>
+        <button class="btn btn-outline btn-sm" id="logoutBtn">Log out</button>
+      </div>
+    </header>
+
+    <main class="content">
+      <p class="section-sub">Instant what-if calculator. Nothing here is saved to the database — use the Waste Heat Data page to store a measurement. <span class="estimate-tag">Estimated / Simulation Result</span></p>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <p class="card-title">Waste Heat Parameters</p>
+          <form id="calcForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Waste Gas Flow Rate (kg/s)</label>
+                <input type="number" id="flowRate" step="0.01" min="0.01" value="10">
+              </div>
+              <div class="form-group">
+                <label>Specific Heat Capacity (kJ/kg·K)</label>
+                <input type="number" id="specificHeat" step="0.01" min="0.01" value="1.1">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Inlet Temperature (°C)</label>
+                <input type="number" id="inletTemperature" step="0.1" value="450">
+              </div>
+              <div class="form-group">
+                <label>Outlet Temperature (°C)</label>
+                <input type="number" id="outletTemperature" step="0.1" value="200">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Heat Recovery Factor (%)</label>
+              <input type="number" id="heatRecoveryFactor" step="0.1" min="0" max="100" value="70">
+            </div>
+
+            <p class="card-title mt-16">ORC Parameters</p>
+            <div class="form-row">
+              <div class="form-group">
+                <label>ORC Thermal Efficiency (%)</label>
+                <input type="number" id="orcEfficiency" step="0.1" min="0" max="100" value="18">
+              </div>
+              <div class="form-group">
+                <label>Operating Hours (hrs/day)</label>
+                <input type="number" id="operatingHours" min="1" max="24" value="24">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Operating Days (days/month)</label>
+                <input type="number" id="operatingDays" min="1" max="31" value="30">
+              </div>
+              <div class="form-group">
+                <label>Grid Emission Factor (kg CO2/kWh)</label>
+                <input type="number" id="gridEmissionFactor" step="0.01" min="0" value="0.7">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">CALCULATE</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <p class="card-title">Waste Heat Recovery Process</p>
+          <div class="flow-diagram">
+            <div class="flow-step">Industrial Process</div><div class="flow-arrow">&#8595;</div>
+            <div class="flow-step">Waste Heat</div><div class="flow-arrow">&#8595;</div>
+            <div class="flow-step">Heat Recovery</div><div class="flow-arrow">&#8595;</div>
+            <div class="flow-step">ORC Evaporator</div><div class="flow-arrow">&#8595;</div>
+            <div class="flow-step">Organic Working Fluid</div><div class="flow-arrow">&#8595;</div>
+            <div class="flow-step">Turbine</div><div class="flow-arrow">&#8595;</div>
+            <div class="flow-step">Generator</div><div class="flow-arrow">&#8595;</div>
+            <div class="flow-step" style="background:#0f5c4c; color:#fff; border-color:#0f5c4c;">Electricity</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mt-24">
+        <p class="card-title">Results <span class="estimate-tag">Simulation Result</span></p>
+        <div class="grid grid-4" id="resultsGrid" style="display:none;">
+          <div class="result-card"><div class="label">Recoverable Heat</div><div class="value" id="rHeat">-</div><div class="label">kW</div></div>
+          <div class="result-card"><div class="label">Estimated Electrical Power</div><div class="value" id="rPower">-</div><div class="label">kW</div></div>
+          <div class="result-card"><div class="label">Daily Energy</div><div class="value" id="rDaily">-</div><div class="label">kWh</div></div>
+          <div class="result-card"><div class="label">Monthly Energy</div><div class="value" id="rMonthly">-</div><div class="label">kWh</div></div>
+        </div>
+        <div class="grid grid-4 mt-16" id="resultsGrid2" style="display:none;">
+          <div class="result-card"><div class="label">Annual Energy</div><div class="value" id="rAnnual">-</div><div class="label">kWh</div></div>
+          <div class="result-card"><div class="label">Daily CO2 Reduction</div><div class="value" id="rCO2Daily">-</div><div class="label">kg</div></div>
+          <div class="result-card"><div class="label">Monthly CO2 Reduction</div><div class="value" id="rCO2Monthly">-</div><div class="label">tonnes</div></div>
+          <div class="result-card"><div class="label">Annual CO2 Reduction</div><div class="value" id="rCO2Annual">-</div><div class="label">tonnes</div></div>
+        </div>
+        <p class="muted" id="placeholderMsg">Enter parameters and click CALCULATE to see estimated results.</p>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/orc-calculator.js"></script>
+</body>
+</html>

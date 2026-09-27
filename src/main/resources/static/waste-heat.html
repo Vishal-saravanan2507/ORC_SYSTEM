@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Waste Heat Data - Waste Heat ORC System</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/dashboard.css">
+<link rel="stylesheet" href="css/forms.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">Waste Heat &rarr; ORC <span>Energy Management System</span></div>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="industrial-units.html">Industrial Units</a>
+      <a href="waste-heat.html">Waste Heat Data</a>
+      <a href="orc-calculator.html">ORC Calculator</a>
+      <a href="monitoring.html">Monitoring</a>
+      <a href="reports.html">Reports</a>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button class="menu-toggle" id="menuToggle">&#9776;</button>
+        <div class="title">Waste Heat Data</div>
+      </div>
+      <div class="meta">
+        <span id="topbarDate"></span>
+        <span class="user-chip">admin</span>
+        <button class="btn btn-outline btn-sm" id="logoutBtn">Log out</button>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="flex-between">
+        <p class="section-sub" style="margin:0;">Enter waste-heat measurements. Recoverable heat, ORC power, energy and CO2 reduction are calculated automatically on save. <span class="estimate-tag">Estimated</span></p>
+        <button class="btn btn-primary" id="addRecordBtn">+ Add Measurement</button>
+      </div>
+
+      <div class="card mt-16">
+        <div class="toolbar">
+          <select id="unitFilter"><option value="">All Industrial Units</option></select>
+          <select id="sourceFilter">
+            <option value="">All Heat Sources</option>
+            <option value="FURNACE">Furnace</option>
+            <option value="BOILER">Boiler</option>
+            <option value="KILN">Kiln</option>
+            <option value="EXHAUST_GAS">Exhaust Gas</option>
+            <option value="GAS_TURBINE">Gas Turbine</option>
+            <option value="ENGINE">Engine</option>
+            <option value="PROCESS_HEATER">Process Heater</option>
+            <option value="OTHER">Other</option>
+          </select>
+          <button class="btn btn-outline btn-sm" id="clearFilters">Clear</button>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Industry</th><th>Source</th><th>Date</th><th>Flow (kg/s)</th>
+              <th>ΔT (°C)</th><th>Recoverable Heat (kW)</th><th>Power (kW)</th><th>Daily Energy (kWh)</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="recordsBody"><tr><td colspan="9" class="muted">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div class="modal-overlay" id="recordModal">
+  <div class="modal" style="width:640px;">
+    <h3 id="modalTitle">Add Waste Heat Measurement</h3>
+    <form id="recordForm">
+      <input type="hidden" id="recordId">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="required">Industrial Unit</label>
+          <select id="industrialUnitId" required></select>
+        </div>
+        <div class="form-group">
+          <label class="required">Waste Heat Source</label>
+          <select id="heatSource" required>
+            <option value="FURNACE">Furnace</option>
+            <option value="BOILER">Boiler</option>
+            <option value="KILN">Kiln</option>
+            <option value="EXHAUST_GAS">Exhaust Gas</option>
+            <option value="GAS_TURBINE">Gas Turbine</option>
+            <option value="ENGINE">Engine</option>
+            <option value="PROCESS_HEATER">Process Heater</option>
+            <option value="OTHER">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="required">Waste Gas Flow Rate (kg/s)</label>
+          <input type="number" id="flowRate" step="0.01" min="0.01" value="10" required>
+        </div>
+        <div class="form-group">
+          <label class="required">Specific Heat (kJ/kg·K)</label>
+          <input type="number" id="specificHeat" step="0.01" min="0.01" value="1.1" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="required">Inlet Temperature (°C)</label>
+          <input type="number" id="inletTemperature" step="0.1" value="450" required>
+        </div>
+        <div class="form-group">
+          <label class="required">Outlet Temperature (°C)</label>
+          <input type="number" id="outletTemperature" step="0.1" value="200" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="required">Heat Recovery Factor (%)</label>
+          <input type="number" id="heatRecoveryFactor" step="0.1" min="0" max="100" value="70" required>
+        </div>
+        <div class="form-group">
+          <label class="required">ORC Thermal Efficiency (%)</label>
+          <input type="number" id="orcEfficiency" step="0.1" min="0" max="100" value="18" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="required">Operating Hours (hrs/day)</label>
+          <input type="number" id="operatingHours" min="1" max="24" value="24" required>
+        </div>
+        <div class="form-group">
+          <label class="required">Operating Days (days/month)</label>
+          <input type="number" id="operatingDays" min="1" max="31" value="30" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="required">Grid Emission Factor (kg CO2/kWh)</label>
+          <input type="number" id="gridEmissionFactor" step="0.01" min="0" value="0.7" required>
+        </div>
+        <div class="form-group">
+          <label>Recorded Date</label>
+          <input type="date" id="recordedDate">
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" id="cancelModal">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save &amp; Calculate</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/waste-heat.js"></script>
+</body>
+</html>

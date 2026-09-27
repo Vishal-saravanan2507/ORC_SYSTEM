@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Industrial Units - Waste Heat ORC System</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/dashboard.css">
+<link rel="stylesheet" href="css/forms.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">Waste Heat &rarr; ORC <span>Energy Management System</span></div>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="industrial-units.html">Industrial Units</a>
+      <a href="waste-heat.html">Waste Heat Data</a>
+      <a href="orc-calculator.html">ORC Calculator</a>
+      <a href="monitoring.html">Monitoring</a>
+      <a href="reports.html">Reports</a>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button class="menu-toggle" id="menuToggle">&#9776;</button>
+        <div class="title">Industrial Units</div>
+      </div>
+      <div class="meta">
+        <span id="topbarDate"></span>
+        <span class="user-chip">admin</span>
+        <button class="btn btn-outline btn-sm" id="logoutBtn">Log out</button>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="flex-between">
+        <p class="section-sub" style="margin:0;">Register and manage the industrial units connected to this monitoring system.</p>
+        <button class="btn btn-primary" id="addUnitBtn">+ Add Industrial Unit</button>
+      </div>
+
+      <div class="card mt-16">
+        <div class="toolbar">
+          <input type="text" id="searchInput" placeholder="Search by name or location...">
+          <select id="statusFilter">
+            <option value="">All Statuses</option>
+            <option value="ACTIVE">Active</option>
+            <option value="INACTIVE">Inactive</option>
+          </select>
+          <button class="btn btn-outline btn-sm" id="clearFilters">Clear</button>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Industry Name</th><th>Type</th><th>Location</th><th>Contact</th>
+              <th>Capacity (kW)</th><th>Status</th><th>Created</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="unitsBody"><tr><td colspan="8" class="muted">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div class="modal-overlay" id="unitModal">
+  <div class="modal">
+    <h3 id="modalTitle">Add Industrial Unit</h3>
+    <form id="unitForm">
+      <input type="hidden" id="unitId">
+      <div class="form-group">
+        <label class="required">Industry Name</label>
+        <input type="text" id="industryName" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="required">Industry Type</label>
+          <select id="industryType" required>
+            <option value="STEEL">Steel</option>
+            <option value="CEMENT">Cement</option>
+            <option value="GLASS">Glass</option>
+            <option value="CHEMICAL">Chemical</option>
+            <option value="TEXTILE">Textile</option>
+            <option value="PAPER">Paper</option>
+            <option value="FOOD_PROCESSING">Food Processing</option>
+            <option value="POWER_PLANT">Power Plant</option>
+            <option value="OTHER">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="status">
+            <option value="ACTIVE">Active</option>
+            <option value="INACTIVE">Inactive</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Location</label>
+        <input type="text" id="location">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Contact Person</label>
+          <input type="text" id="contactPerson">
+        </div>
+        <div class="form-group">
+          <label>Installed Capacity (kW)</label>
+          <input type="number" id="installedCapacity" step="0.01" min="0">
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" id="cancelModal">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/industrial-units.js"></script>
+</body>
+</html>

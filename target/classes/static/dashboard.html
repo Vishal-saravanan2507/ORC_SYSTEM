@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard - Industrial Waste Heat ORC System</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/dashboard.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="app-shell">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">Waste Heat &rarr; ORC <span>Energy Management System</span></div>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="industrial-units.html">Industrial Units</a>
+      <a href="waste-heat.html">Waste Heat Data</a>
+      <a href="orc-calculator.html">ORC Calculator</a>
+      <a href="monitoring.html">Monitoring</a>
+      <a href="reports.html">Reports</a>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button class="menu-toggle" id="menuToggle">&#9776;</button>
+        <div class="title">Dashboard</div>
+      </div>
+      <div class="meta">
+        <span id="topbarDate"></span>
+        <span class="user-chip">admin</span>
+        <button class="btn btn-outline btn-sm" id="logoutBtn">Log out</button>
+      </div>
+    </header>
+
+    <main class="content">
+      <p class="section-sub">Live overview of all industrial units, ORC performance, and CO2 reduction. <span class="estimate-tag">Estimated / Simulation Result</span></p>
+
+      <div class="grid grid-4" id="kpiGrid">
+        <div class="kpi-card"><div class="label">Total Industrial Units</div><div class="value" id="kpiUnits">-</div><div class="unit">units registered</div></div>
+        <div class="kpi-card"><div class="label">Waste Heat Recovered</div><div class="value" id="kpiHeat">-</div><div class="unit">kW (sum, latest records)</div></div>
+        <div class="kpi-card"><div class="label">Current Estimated Power</div><div class="value" id="kpiPower">-</div><div class="unit">kW electrical</div></div>
+        <div class="kpi-card"><div class="label">Daily Energy Generated</div><div class="value" id="kpiDaily">-</div><div class="unit">kWh/day</div></div>
+      </div>
+
+      <div class="grid grid-4 mt-16">
+        <div class="kpi-card"><div class="label">Monthly Energy</div><div class="value" id="kpiMonthly">-</div><div class="unit">kWh/month</div></div>
+        <div class="kpi-card"><div class="label">Annual Energy Potential</div><div class="value" id="kpiAnnual">-</div><div class="unit">kWh/year</div></div>
+        <div class="kpi-card"><div class="label">CO2 Reduction</div><div class="value" id="kpiCO2">-</div><div class="unit">tonnes/month</div></div>
+        <div class="kpi-card"><div class="label">Average ORC Efficiency</div><div class="value" id="kpiEfficiency">-</div><div class="unit">%</div></div>
+      </div>
+
+      <div class="grid grid-2 mt-24">
+        <div class="card">
+          <p class="card-title">Power Generation (kW)</p>
+          <div class="chart-wrap"><canvas id="powerChart"></canvas></div>
+        </div>
+        <div class="card">
+          <p class="card-title">Energy Generation (kWh)</p>
+          <div class="chart-wrap"><canvas id="energyChart"></canvas></div>
+        </div>
+      </div>
+
+      <div class="grid grid-2 mt-24">
+        <div class="card">
+          <p class="card-title">Waste Heat Temperature (°C)</p>
+          <div class="chart-wrap"><canvas id="tempChart"></canvas></div>
+        </div>
+        <div class="card">
+          <p class="card-title">ORC Efficiency (%)</p>
+          <div class="chart-wrap"><canvas id="effChart"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card mt-24">
+        <p class="card-title">Recent Measurements</p>
+        <table class="data-table">
+          <thead><tr><th>Industry</th><th>Heat Source</th><th>Date</th><th>Electrical Power (kW)</th></tr></thead>
+          <tbody id="recentBody"><tr><td colspan="4" class="muted">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>
